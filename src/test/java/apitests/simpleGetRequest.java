@@ -1,6 +1,8 @@
 package apitests;
 
+import static io.restassured.RestAssured.*;
 import io.restassured.RestAssured;
+
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.testng.Assert;
@@ -49,12 +51,35 @@ public class simpleGetRequest {
                 .when().get(hrurl).then()
                 .assertThat().statusCode(200)
                 .and().contentType("application/json");
+    }
+    /*
+        Given accept type is json
+        When user sends get request to regions/2
+        Then response status code must be 200
+        and body is json format
+        and response body contains Americas
+     */
 
+    @Test
+    public void test4(){
+        Response response = given().accept(ContentType.JSON)
+                             .when().get(hrurl + "/2");
 
+        //verify status code
+        Assert.assertEquals(response.statusCode(),200);
 
+        //verify content type
+        Assert.assertEquals(response.contentType(),"application/json");
+
+        //verify body includes Americas
+        Assert.assertTrue(response.body().asString().contains("Americas"));
 
 
     }
+
+
+
+
 
 
 }
