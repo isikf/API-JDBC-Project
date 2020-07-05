@@ -16,6 +16,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import utilities.ConfigurationReader;
 
+import java.util.List;
+
 public class SpartanTestWithPath {
 
 
@@ -69,5 +71,41 @@ public class SpartanTestWithPath {
         assertEquals(gender,"Female");
         assertEquals(phone,3312820936l);
     }
+
+    @Test
+    public void getAllSpartanWithPath(){
+
+        Response response = given().auth().basic("admin", "admin")
+                .when().get("/api/spartans");
+
+        assertEquals(response.statusCode(),200);
+        //verify content type
+        System.out.println(response.getHeader("Content-Type"));
+        assertEquals(response.getHeader("Content-Type"),"application/json;charset=UTF-8");
+
+
+        int firstId = response.path("id[0]");
+        System.out.println("firstId = " + firstId);
+
+        String firstName = response.path("name[0]");
+        System.out.println("firstName = " + firstName);
+
+        String lastFirstName = response.path("name[-1]");
+        System.out.println("lastFirstName = " + lastFirstName);
+
+        //print all first names from spartans
+        List<String> names = response.path("name");
+        System.out.println(names);
+
+        List<Object> phones = response.path("phone");
+
+        for (Object phone : phones) {
+            System.out.println(phone);
+        }
+
+
+    }
+
+
 
 }
