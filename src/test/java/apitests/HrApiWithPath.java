@@ -65,7 +65,35 @@ public class HrApiWithPath {
 
         //TASK
         //assert that all regions id's are equal to 2
+        List<Integer> allRegionsIds = response.path("items.region_id");
 
+        for (int regionsId : allRegionsIds) {
+            System.out.println("regionsId = " + regionsId);
+            assertEquals(regionsId,2);
+        }
 
     }
+
+    @Test
+    public void test2(){
+        Response response = given().accept(ContentType.JSON)
+                .and().queryParam("q", "{\"job_id\": \"IT_PROG\"}")
+                .when().get("/employees");
+
+        assertEquals(response.statusCode(),200);
+        assertEquals(response.contentType(),"application/json");
+        assertTrue(response.asString().contains("IT_PROG"));
+        response.prettyPrint();
+
+        //get all JOB IDs
+        List<String> allJobIDs = response.path("items.job_id");
+        //verify each of your job ids is equal to IT_PROG
+        for (String jobID : allJobIDs) {
+            assertEquals(jobID,"IT_PROG");
+        }
+
+    }
+
+
+
 }
