@@ -20,6 +20,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import utilities.ConfigurationReader;
 
+import java.util.List;
 import java.util.Map;
 
 public class JsonToJavaCollection {
@@ -42,5 +43,30 @@ public class JsonToJavaCollection {
         //we will convert Json Response to Java Collection
         Map<String,Object> spartanMap = response.body().as(Map.class);
 
+        System.out.println(spartanMap);
+        String name = (String) spartanMap.get("name");
+        assertEquals(name,"Meta");
+
     }
+
+    @Test
+    public void allSpartanWithList(){
+
+        Response response = given().accept(ContentType.JSON)
+                .and().auth().basic("admin", "admin")
+                .when().get("/api/spartans");
+
+        assertEquals(response.statusCode(),200);
+
+        List<Map<String,Object>> allSpartanList = response.body().as(List.class);
+
+        System.out.println(allSpartanList);
+
+        //print first spartan first name
+        System.out.println(allSpartanList.get(0).get("name"));
+
+    }
+
+
+
 }
