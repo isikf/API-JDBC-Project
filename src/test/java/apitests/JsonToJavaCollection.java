@@ -64,8 +64,38 @@ public class JsonToJavaCollection {
 
         //print first spartan first name
         System.out.println(allSpartanList.get(0).get("name"));
+        //get one spartan from list and assign to map
+        Map<String, Object> spartan2 = allSpartanList.get(1);
+        //print the name for second spartan
+        System.out.println(spartan2.get("name"));
 
     }
+
+    @Test
+    public void regionJsonMap(){
+
+        Response response = when().get("http://3.81.99.109:1000/ords/hr/regions");
+
+        assertEquals(response.statusCode(),200);
+
+        Map<String,Object> regionMap = response.body().as(Map.class);
+
+        System.out.println(regionMap.get("count"));
+
+        System.out.println(regionMap.get("hasMore"));
+
+        System.out.println(regionMap.get("items"));
+
+        List<Map<String,Object>> itemsList = (List<Map<String, Object>>) regionMap.get("items");
+
+        //get second region information
+        System.out.println("itemsList.get(1) = " + itemsList.get(1).get("region_name"));
+
+        //print europe
+        System.out.println(itemsList.get(0).get("region_name"));
+
+    }
+
 
 
 
