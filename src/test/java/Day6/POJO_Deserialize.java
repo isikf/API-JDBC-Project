@@ -1,5 +1,6 @@
 package Day6;
 
+import com.google.gson.Gson;
 import org.testng.annotations.Test;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
@@ -19,6 +20,7 @@ import org.testng.annotations.Test;
 import utilities.ConfigurationReader;
 
 import java.util.List;
+import java.util.Map;
 
 public class POJO_Deserialize {
 
@@ -43,6 +45,11 @@ public class POJO_Deserialize {
 
         System.out.println(spartan15.toString());
 
+        //assertions
+
+        assertEquals(spartan15.getName(),"Meta");
+        assertEquals(spartan15.getId(),15);
+
     }
 
     @Test
@@ -63,5 +70,35 @@ public class POJO_Deserialize {
         System.out.println(items.size());
         System.out.println(items.get(3).getRegionName());
 
+    }
+
+    @Test
+    public void gson_example(){
+
+        Gson gson = new Gson();
+
+        //JSON to Java collections/POJO --> De-serialization
+
+        String myJson = "{\n" +
+                "    \"id\": 15,\n" +
+                "    \"name\": \"Meta\",\n" +
+                "    \"gender\": \"Female\",\n" +
+                "    \"phone\": 1938695106\n" +
+                "}";
+
+        Spartan spartan = gson.fromJson(myJson, Spartan.class);
+
+        Map<String,Object> map = gson.fromJson(myJson, Map.class);
+
+        System.out.println(spartan.toString());
+
+        //-------------------SERIALIZATION----------------
+        //JAVA Collections/Pojo to JSON
+        Spartan spartanEU = new Spartan(200,"Mike","Male",123123123);
+
+        String jsonSpartanEU = gson.toJson(spartanEU);
+        System.out.println(jsonSpartanEU);
+
+        //gson or jackson is called objectMapper,jsonparser,data binding library
     }
 }
